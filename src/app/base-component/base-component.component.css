@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+.mat-header-row:nth-child(2) {
+  height: 0px;
+}
+
+.loading .mat-header-row:nth-child(2) {
+  height: 4px;
+}
+
+th.mat-header-cell,
+td.mat-cell {
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 0 !important;
+}

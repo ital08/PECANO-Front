@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="card">
+    <form [formGroup]="form!">
+      <div class="container">
+        <div class="col-6"></div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select formControlName placeholder="Tipo de Trabajador">
+              <mat-option *ngFor="let types of WorkerTypes" [value]="types.id">
+                {{ types.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8"
+      [class.loading]="loading"
+    >
+      <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="dni">
+        <th mat-header-cell *matHeaderCellDef>DNI</th>
+        <td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="horasTrabajadas">
+        <th mat-header-cell *matHeaderCellDef>Horas Trabajadas</th>
+        <td mat-cell *matCellDef="let element">{{ element.horasLaboradas }}</td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="diasTrabajados">
+        <th mat-header-cell *matHeaderCellDef>Dias Trabajados</th>
+        <td mat-cell *matCellDef="let element">{{ element.diasLaborados }}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="faltas">
+        <th mat-header-cell *matHeaderCellDef>Faltas</th>
+        <td mat-cell *matCellDef="let element">{{ element.faltas }}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="tipodeTrabajador">
+        <th mat-header-cell *matHeaderCellDef>Tipo de Trabajador</th>
+        <td mat-cell *matCellDef="let element">
+          {{ [element.tipodeTrabajador] | callback : getWorkType }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="sueldo">
+        <th mat-header-cell *matHeaderCellDef>Tipo de Trabajador</th>
+        <td mat-cell *matCellDef="let element">
+          {{ [element.tipodeTrabajador] | callback : getWorkType }}
+        </td>
+      </ng-container>
+
+      <!-- Second header row -->
+      <ng-container matColumnDef="header-row-group">
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="4">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="loading ? ['header-row-group'] : []"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</div>
