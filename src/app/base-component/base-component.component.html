@@ -1,81 +1,119 @@
-<div class="container">
-  <div class="card">
-    <form [formGroup]="form!">
-      <div class="container">
-        <div class="col-6"></div>
-        <div class="col-6">
-          <mat-form-field>
-            <mat-select formControlName placeholder="Tipo de Trabajador">
-              <mat-option *ngFor="let types of WorkerTypes" [value]="types.id">
-                {{ types.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+<h6>Prueba PECANO SOFTWARE - Italo Rivadeneyra</h6>
+<div class="container-fluid p-3 h-100">
+  <mat-card
+    class="h-100 mat-elevation-z8 pb-3"
+    style="min-height: calc(100vh - 100px)"
+  >
+    <div class="container-fluid">
+      <form [formGroup]="form!">
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>DNI</mat-label>
+              <input matInput formControlName="dni" placeholder="DNI" />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de Trabajador</mat-label>
+              <mat-select
+                formControlName="tipoTrabajador"
+                placeholder="Tipo de Trabajador"
+              >
+                <mat-option
+                  *ngFor="let types of WorkerTypes"
+                  [value]="types.id"
+                >
+                  {{ types.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <button
+              class="w-100 h-75"
+              [disabled]="loading"
+              (click)="search()"
+              color="accent"
+              mat-raised-button
+            >
+              Buscar
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      class="mat-elevation-z8"
-      [class.loading]="loading"
-    >
-      <!--- Note that these columns can be defined in any order.
+      </form>
+      <table mat-table [dataSource]="dataSource" [class.loading]="loading">
+        <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="dni">
-        <th mat-header-cell *matHeaderCellDef>DNI</th>
-        <td mat-cell *matCellDef="let element">{{ element.dni }}</td>
-      </ng-container>
+        <!-- Position Column -->
+        <ng-container matColumnDef="dni">
+          <th mat-header-cell *matHeaderCellDef>DNI</th>
+          <td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+        </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="horasTrabajadas">
-        <th mat-header-cell *matHeaderCellDef>Horas Trabajadas</th>
-        <td mat-cell *matCellDef="let element">{{ element.horasLaboradas }}</td>
-      </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="horasTrabajadas">
+          <th mat-header-cell *matHeaderCellDef>Horas Trabajadas</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.horasLaboradas }}
+          </td>
+        </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="diasTrabajados">
-        <th mat-header-cell *matHeaderCellDef>Dias Trabajados</th>
-        <td mat-cell *matCellDef="let element">{{ element.diasLaborados }}</td>
-      </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="diasTrabajados">
+          <th mat-header-cell *matHeaderCellDef>Dias Trabajados</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.diasLaborados }}
+          </td>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="faltas">
-        <th mat-header-cell *matHeaderCellDef>Faltas</th>
-        <td mat-cell *matCellDef="let element">{{ element.faltas }}</td>
-      </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="faltas">
+          <th mat-header-cell *matHeaderCellDef>Faltas</th>
+          <td mat-cell *matCellDef="let element">{{ element.faltas }}</td>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="tipodeTrabajador">
-        <th mat-header-cell *matHeaderCellDef>Tipo de Trabajador</th>
-        <td mat-cell *matCellDef="let element">
-          {{ [element.tipodeTrabajador] | callback : getWorkType }}
-        </td>
-      </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="tipodeTrabajador">
+          <th mat-header-cell *matHeaderCellDef>Tipo de Trabajador</th>
+          <td mat-cell *matCellDef="let element">
+            {{ [element.tipodeTrabajador] | callback : getWorkType }}
+          </td>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="sueldo">
-        <th mat-header-cell *matHeaderCellDef>Tipo de Trabajador</th>
-        <td mat-cell *matCellDef="let element">
-          {{ [element.tipodeTrabajador] | callback : getWorkType }}
-        </td>
-      </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="sueldo">
+          <th mat-header-cell *matHeaderCellDef>Sueldo</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.sueldo ?? 0 }}
+          </td>
+        </ng-container>
 
-      <!-- Second header row -->
-      <ng-container matColumnDef="header-row-group">
-        <th mat-header-cell *matHeaderCellDef [attr.colspan]="4">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </th>
-      </ng-container>
+        <!-- Second header row -->
+        <ng-container matColumnDef="header-row-group">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="4">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </th>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-header-row
-        *matHeaderRowDef="loading ? ['header-row-group'] : []"
-      ></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="loading ? ['header-row-group'] : []"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        #paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="pageChanged($event)"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div>
+  </mat-card>
 </div>
